@@ -1,12 +1,14 @@
-const seachSongs = () => {
+const seachSongs = async() => {
     const searchText = document.getElementById('search-field').value;
     const  url = `https://api.lyrics.ovh/suggest/:${searchText}`
     //  load data 
-     fetch(url)
-    .then(res => res.json())
-    .then(data => displaySongs(data.data)) // get one data 
+    const res = await fetch(url);
+    const data = await res.json();
+    displaySongs(data.data); // get one data 
+      // fetch(url)
+            // .then(res => res.json())
+            // .then(data => displaySongs(data.data)) 
 }
- 
 const displaySongs = songs => {
     //  console.log(songs)
     const songContainer = document.getElementById('song-container'); //get parentdiv
@@ -33,16 +35,19 @@ const displaySongs = songs => {
     });
 } 
  
-// lyric API 
-  const getLyric = (artist, title) => {
+// lyric API || use of async await method 
+  const getLyric = async(artist, title) => {
       const url  = `https://api.lyrics.ovh/v1/${artist}/${title}` ;
-       fetch(url)
-       .then(res => res.json())
-       .then(data => getLyricDisplay(data.lyrics))
+      const res = await fetch(url)
+      const data = await res.json();
+      getLyricDisplay(data.lyrics);
+    //    fetch(url)
+    //    .then(res => res.json())
+    //    .then(data => getLyricDisplay(data.lyrics))
   }
    
   const getLyricDisplay = lyrics => {
     const lyricsDiv =  document.getElementById('lyric-container');
     lyricsDiv.innerText = lyrics;
-          console.log(lyrics);
+        // console.log(lyrics);
   }
