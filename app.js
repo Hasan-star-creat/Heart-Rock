@@ -2,12 +2,15 @@ const seachSongs = async() => {
     const searchText = document.getElementById('search-field').value;
     const  url = `https://api.lyrics.ovh/suggest/:${searchText}`
     //  load data 
-    const res = await fetch(url);
-    const data = await res.json();
-    displaySongs(data.data); // get one data 
-      // fetch(url)
-            // .then(res => res.json())
-            // .then(data => displaySongs(data.data)) 
+    // const res = await fetch(url);
+    // const data = await res.json();
+    // displaySongs(data.data);
+   
+    //get one data 
+            fetch(url)
+            .then(res => res.json())
+            .then(data => displaySongs(data.data)) 
+            .catch(error =>displayError('something went wrong!! plese try again latter!'))
 }
 const displaySongs = songs => {
     //  console.log(songs)
@@ -36,18 +39,30 @@ const displaySongs = songs => {
 } 
  
 // lyric API || use of async await method 
-  const getLyric = async(artist, title) => {
+  const getLyric =async(artist, title) => {
       const url  = `https://api.lyrics.ovh/v1/${artist}/${title}` ;
-      const res = await fetch(url)
-      const data = await res.json();
-      getLyricDisplay(data.lyrics);
-    //    fetch(url)
-    //    .then(res => res.json())
-    //    .then(data => getLyricDisplay(data.lyrics))
+       try {         
+            const res = await fetch(url)
+            const data = await res.json();
+            getLyricDisplay(data.lyrics);
+       }
+        catch(error){
+          displayError('Sorry! I failed to load lyrics, Please try again later!')
+       }
+    
+      //  fetch(url)
+      //  .then(res => res.json())
+      //  .then(data => getLyricDisplay(data.lyrics))
   }
-   
+    
   const getLyricDisplay = lyrics => {
     const lyricsDiv =  document.getElementById('lyric-container');
     lyricsDiv.innerText = lyrics;
-        // console.log(lyrics);
+       console.log(lyrics);
+  }
+      
+       // disply errro show 
+      const displayError = error => {
+       const Error = document.getElementById('disply-error');
+       Error.innerText = error;
   }
