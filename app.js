@@ -1,4 +1,6 @@
 const seachSongs = async() => {
+    // const spinner = document.getElementById('spiner').innerText;
+    // spinner.style.display= "inline-block";
     const searchText = document.getElementById('search-field').value;
     const  url = `https://api.lyrics.ovh/suggest/:${searchText}`
     //  load data 
@@ -7,13 +9,14 @@ const seachSongs = async() => {
     // displaySongs(data.data);
    
     //get one data 
+     toggleSpinner()  // snipper fuction calling 
             fetch(url)
             .then(res => res.json())
             .then(data => displaySongs(data.data)) 
             .catch(error =>displayError('something went wrong!! plese try again latter!'))
 }
 const displaySongs = songs => {
-    //  console.log(songs)
+     console.log(songs)
     const songContainer = document.getElementById('song-container'); //get parentdiv
       songContainer.innerText = ''; // previw data don;t stored 
     songs.forEach(song => { // for Each looping 
@@ -34,14 +37,16 @@ const displaySongs = songs => {
    </div>
        `; // parent div crete value append 
        songContainer.appendChild(songdiv); 
-
+       toggleSpinner()
     });
+    
 } 
  
 // lyric API || use of async await method 
   const getLyric =async(artist, title) => {
       const url  = `https://api.lyrics.ovh/v1/${artist}/${title}` ;
-       try {         
+       try {  
+           
             const res = await fetch(url)
             const data = await res.json();
             getLyricDisplay(data.lyrics);
@@ -58,7 +63,7 @@ const displaySongs = songs => {
   const getLyricDisplay = lyrics => {
     const lyricsDiv =  document.getElementById('lyric-container');
     lyricsDiv.innerText = lyrics;
-       console.log(lyrics);
+      //  console.log(lyrics);
   }
       
        // disply errro show 
@@ -66,3 +71,21 @@ const displaySongs = songs => {
        const Error = document.getElementById('disply-error');
        Error.innerText = error;
   }
+
+   const toggleSpinner = () => {
+      const spinner = document.getElementById('spiner');
+      spinner.classList.toggle('d-none'); // use of toggle method 0 1 
+      // if(show){
+      //   spinner.classList.remove('d-none');
+      // }
+      // else{
+      //   spinner.classList.add('d-none');
+      // }  
+   }
+
+    //  use of Eter key search button 
+    const searchField = document.getElementById('search-field').addEventListener('keypress',function(event){
+          if(event.key === 'Enter'){
+          document.getElementById('search-button').click();
+          }
+    });
